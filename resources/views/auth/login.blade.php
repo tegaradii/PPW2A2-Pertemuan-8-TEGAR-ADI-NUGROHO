@@ -1,6 +1,7 @@
 @extends('auth.layouts')
 
 @section('content')
+<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-8">
