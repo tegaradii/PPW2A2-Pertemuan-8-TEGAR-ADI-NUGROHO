@@ -13,7 +13,7 @@ class LoginRegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except([
-            'logout', 'dashboard'
+            'logout', 'dashboard', 'admin'
         ]);
     }
 
@@ -27,20 +27,24 @@ class LoginRegisterController extends Controller
         $request->validate([
             'name'      => 'required|string|max:250',
             'email'     => 'required|email|max:250|unique:users',
-            'password'  => 'required|min:8|confirmed'
+            'password'  => 'required|min:8|confirmed',
+            'role'      => 'required'
         ]);
 
         User::create([
             'name'      => $request->name,
             'email'     => $request->email,
-            'password'  => Hash::make($request->password)
+            'password'  => Hash::make($request->password),
+            'role'      => $request->role
         ]);
 
-        $credentials = $request->only('email', 'password');
+        /* $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
         return redirect()->route('dahsboard')
-            ->withSuccess('You have successfully registered & logged in!');
+            ->withSuccess('You have successfully registered & logged in!'); */
+
+        return redirect()->route('login');
     }
 
     public function login()
@@ -57,7 +61,7 @@ class LoginRegisterController extends Controller
 
         if (Auth::attempt($credentials)){
             $request->session()->regenerate();
-            return redirect()->route('dahsboard')
+            return redirect()->route('dashboard')
                 ->withSuccess('You have successfully logged in!');
         }
         return back()->withErrors([
@@ -75,6 +79,11 @@ class LoginRegisterController extends Controller
             ->withErrors([
                 'email' => 'Please login to access the dashboard.',
             ])->onlyInput('email');
+    }
+
+    public function admin()
+    {
+        return view('auth.admin');
     }
 
     public function logout(Request $request)

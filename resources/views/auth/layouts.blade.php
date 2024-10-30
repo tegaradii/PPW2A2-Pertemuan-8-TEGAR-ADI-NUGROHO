@@ -31,6 +31,7 @@
                         </li>
                     @else
                         <li class="nav-item dropdown">
+                            <a href="{{route('admin')}}">Halaman Admin</a>
                             <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 {{ Auth::user()->name }}

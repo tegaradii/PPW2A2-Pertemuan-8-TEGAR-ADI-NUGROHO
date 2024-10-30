@@ -17,6 +17,11 @@
                         You are logged in!
                     </div>
                 @endif
+                @if (Session::has('noAdmin'))
+                <div class="alert alert-success">
+                    {{ Session::get('noAdmin') }}
+                </div>
+                @endif
             </div>
         </div>
     </div>

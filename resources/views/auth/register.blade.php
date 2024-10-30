@@ -21,6 +21,20 @@
                     </div>
 
                     <div class="mb-3 row">
+                        <label for="role" class="col-md-4 col-form-label text-md-end text-start">Role</label>
+                        <div class="col-md-6">
+                            <select class="form-control @error('role') is-invalid @enderror" id="role" name="role">
+                                <option value="">-- Select Role --</option>
+                                <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
+                            </select>
+                            @if ($errors->has('role'))
+                                <span class="text-danger">{{ $errors->first('role') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
                         <label for="email" class="col-md-4 col-form-label text-md-end text-start">Email Address</label>
                         <div class="col-md-6">
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}">
