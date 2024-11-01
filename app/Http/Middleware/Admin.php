@@ -19,9 +19,7 @@ class Admin
         if (Auth::check() && Auth::user()->role === 'User') {
             return redirect()->route('dashboard')
             ->with ('noAdmin','Anda tidak diperbolehkan ke halaman admin');
-            // dd('admin');
         }
-        // dd('as');
         return $next($request);
     }
 }
