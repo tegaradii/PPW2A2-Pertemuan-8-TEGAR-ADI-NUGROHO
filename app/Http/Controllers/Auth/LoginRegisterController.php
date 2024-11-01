@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use illuminate\Support\Facades\Storage;
 
 class LoginRegisterController extends Controller
 {
     public function __construct()
     {
         $this->middleware('guest')->except([
-            'logout', 'dashboard', 'admin'
+            'logout', 'dashboard', 'admin',
         ]);
     }
 
@@ -28,14 +29,27 @@ class LoginRegisterController extends Controller
             'name'      => 'required|string|max:250',
             'email'     => 'required|email|max:250|unique:users',
             'password'  => 'required|min:8|confirmed',
-            'role'      => 'required'
+            'role'      => 'required',
+            'photo'     => 'image|nullable|max:1999',
+
         ]);
+
+        if($request->hasFile('photo')){
+            $filenameWithExt = $request->file('photo')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $filenameToStore = $filename.'_'.time().'.'.$extension;
+            $path = $request->file('photo')->storeAs('photos', $filenameToStore);
+        } else {
+            $filename = 'noimage.jpg';
+        }
 
         User::create([
             'name'      => $request->name,
             'email'     => $request->email,
             'password'  => Hash::make($request->password),
-            'role'      => $request->role
+            'role'      => $request->role,
+            'photo'     => $path
         ]);
 
         /* $credentials = $request->only('email', 'password');
@@ -43,6 +57,8 @@ class LoginRegisterController extends Controller
         $request->session()->regenerate();
         return redirect()->route('dahsboard')
             ->withSuccess('You have successfully registered & logged in!'); */
+
+
 
         return redirect()->route('login');
     }
