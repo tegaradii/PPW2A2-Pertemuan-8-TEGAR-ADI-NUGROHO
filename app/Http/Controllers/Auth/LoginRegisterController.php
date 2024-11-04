@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 
 class LoginRegisterController extends Controller
 {
@@ -39,9 +39,9 @@ class LoginRegisterController extends Controller
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('photo')->getClientOriginalExtension();
             $filenameToStore = $filename.'_'.time().'.'.$extension;
-            $path = $request->file('photo')->storeAs('photos', $filenameToStore);
+            $path = $request->file('photo')->storeAs('photos', $filenameToStore, 'public');
         } else {
-            $filename = 'noimage.jpg';
+            $path = 'noimage.jpg';
         }
 
         User::create([

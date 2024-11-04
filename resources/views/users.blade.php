@@ -20,7 +20,7 @@
             @endif
         </td>
         <td>
-            <button>Edit</button>
+            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">Edit</a>
             <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                 @method('DELETE')
                 @csrf
