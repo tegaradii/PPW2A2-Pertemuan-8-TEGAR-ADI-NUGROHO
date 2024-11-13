@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GalleryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,7 @@ Route::get('restricted', function(){
 })->middleware('checkage');
 
 Route::resource('users', UserController::class);
+Route::resource('/gallery', GalleryController::class);
 
 
 
