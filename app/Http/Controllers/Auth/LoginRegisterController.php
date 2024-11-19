@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Jobs\RegisteredMailJob;
 
 class LoginRegisterController extends Controller
 {
@@ -44,13 +45,20 @@ class LoginRegisterController extends Controller
             $path = 'noimage.jpg';
         }
 
-        User::create([
+
+        $user = User::create([
             'name'      => $request->name,
             'email'     => $request->email,
             'password'  => Hash::make($request->password),
             'role'      => $request->role,
             'photo'     => $path
         ]);
+
+        $data = [
+            'name' => $user->name,
+            'email' => $user->email,
+        ];
+        dispatch(new RegisteredMailJob($data));
 
         /* $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
