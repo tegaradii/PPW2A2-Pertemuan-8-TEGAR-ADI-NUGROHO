@@ -1,0 +1,122 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Contoh API documentation",
+        "description": "Contoh API doc menggunakan OpenAPI/Swagger",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "choirudin.emchagmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/api/galleries": {
+            "get": {
+                "tags": [
+                    "Galleries"
+                ],
+                "summary": "Get list of galleries",
+                "operationId": "ad079bc4068bc19ce86ea1c340d965b4",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data gallery",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "Gallery id"
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Gallery Title"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "Gallery Description"
+                                            },
+                                            "picture": {
+                                                "type": "string",
+                                                "example": "http://example.com/path/to/picture.jpg"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/greet": {
+            "get": {
+                "tags": [
+                    "greeting"
+                ],
+                "summary": "Returns a Sample API response",
+                "description": "A sample greeting to test out the API",
+                "operationId": "greet",
+                "parameters": [
+                    {
+                        "name": "firstname",
+                        "in": "query",
+                        "description": "nama depan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lastname",
+                        "in": "query",
+                        "description": "nama belakang",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Berhasil mengambil Kategori Berita",
+                                    "data": {
+                                        "output": "Hallo Jon Doe",
+                                        "firstname": "John",
+                                        "lastname": "Doe"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Galleries",
+            "description": "Galleries"
+        },
+        {
+            "name": "greeting",
+            "description": "greeting"
+        }
+    ]
+}
