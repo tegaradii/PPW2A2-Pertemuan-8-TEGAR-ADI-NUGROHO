@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\File;
 
 class GalleryController extends Controller
 {
@@ -77,7 +78,8 @@ class GalleryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $gallery = Post::findOrFail($id);
+        return view('gallery.edit', compact('gallery'));
     }
 
     /**
@@ -85,7 +87,32 @@ class GalleryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $gallery = Post::findOrFail($id);
+
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'picture' => 'image|nullable|max:1999'
+        ]);
+
+        if ($request->hasFile('picture')) {
+            $filenameWithExt = $request->file('picture')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('picture')->getClientOriginalExtension();
+            $basename = uniqid() . time();
+            $smallFilename = "small_{$basename}.{$extension}";
+            $mediumFilename = "medium_{$basename}.{$extension}";
+            $largeFilename = "large_{$basename}.{$extension}";
+            $filenameSimpan = "{$basename}.{$extension}";
+            $path = $request->file('picture')->storeAs('posts_image', $filenameSimpan);
+        } else {
+            $filenameSimpan = 'noimage.png';
+        }
+        $gallery->picture = $filenameSimpan;
+        $gallery->title = $request->title;
+        $gallery->description = $request->description;
+        $gallery->save();
+        return redirect('gallery')->with('success', 'Gallery updated successfully.');
     }
 
     /**
@@ -93,6 +120,13 @@ class GalleryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $gallery = Post::findOrFail($id);
+        $file = public_path('storage/'.$gallery->picture);
+        if (File::exists($file)) {
+            File::delete($file);
+        }
+
+        $gallery->delete();
+        return redirect('gallery')->with('success', 'Gallery deleted successfully.');
     }
 }

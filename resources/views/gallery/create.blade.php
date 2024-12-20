@@ -1,3 +1,5 @@
+@extends('auth.layouts')
+@section('content')
 <form action="{{ route('gallery.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="mb-3 row">
@@ -34,3 +36,4 @@
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+@endsection

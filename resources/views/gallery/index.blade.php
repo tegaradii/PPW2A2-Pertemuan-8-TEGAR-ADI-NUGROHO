@@ -14,6 +14,16 @@
                                         <img class="example-image img-fluid mb-2" src="{{ asset('storage/posts_image/' . $gallery->picture) }}" alt="image-1" />
                                     </a>
                                 </div>
+                                <form method="POST" action="{{route('gallery.destroy', $gallery->id)}}" class="d-flex">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">
+                                        Hapus
+                                    </button>
+                                    <a href="{{route('gallery.edit', $gallery->id)}}" class="btn btn-warning">
+                                        Edit
+                                    </a>
+                                </form>
                             </div>
                         @endforeach
                     @else
